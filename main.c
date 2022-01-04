@@ -41,6 +41,7 @@ void print() {
 		}
 		printw("\n");
 	}
+	printw("HP : %d\n", hp);
 	refresh();
 }
 int main()
