@@ -15,12 +15,13 @@ int KEY_VALUE[4] = {KEY_UP, KEY_RIGHT, KEY_DOWN, KEY_LEFT};
 
 //형상 관련 변수
 char WALL= '#';
+char TRAP= '^';
 char MAP[H][W] = {
 	"##########",
 	"#        #",
 	"#        #",
-	"#        #",
-	"#        #",
+	"#   ^    #",
+	"#   ^    #",
 	"#        #",
 	"#        #",
 	"#        #",
@@ -52,22 +53,28 @@ int main()
 	while(1) {
 	    print();
 	    int ch = getch();
+	    bool moved = false;
 	    for(int d = 0; d < 4; d++) {
 		    if(ch == KEY_VALUE[d]) {
 			    int ny = pu[0] + D[d][0];
 			    int nx = pu[1] + D[d][1];
 			    if(ny < 0 || ny >= H ) break;
-			    if(nx < 0 || nx >= W ) {
-				    printw("zzz");
-				    break;
-			    }
+			    if(nx < 0 || nx >= W ) break;
 			    if(MAP[ny][nx] == WALL) break;
 
 			    pu[0] = ny;
 			    pu[1] = nx;
+			    moved = true;
 
 			    break;
 		    }
+	    }
+
+	    if(!moved) continue;
+	    //움직인 후 이벤트 구현
+	    if(MAP[pu[0]][pu[1]] == TRAP) {
+	    	//트랩 설치하기
+		hp -= 10;
 	    }
     }
     getch();
