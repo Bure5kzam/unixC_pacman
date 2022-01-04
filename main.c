@@ -8,14 +8,18 @@
 //유저 파라미터
 int pu[2] = {1,1};
 int hp = 100;
+int score = 0;
 
 //위치 관련 변수
 int D[4][2] = {{-1,0}, {0, 1}, {1, 0}, {0, -1}};
 int KEY_VALUE[4] = {KEY_UP, KEY_RIGHT, KEY_DOWN, KEY_LEFT};
 
-//형상 관련 변수
+//맵 관련 변수
 char WALL= '#';
 char TRAP= '^';
+char PRIZE='P';
+char PRIZE_SCORE=30;
+
 char MAP[H][W] = {
 	"##########",
 	"#        #",
@@ -23,8 +27,8 @@ char MAP[H][W] = {
 	"#   ^    #",
 	"#   ^    #",
 	"#        #",
-	"#        #",
-	"#        #",
+	"#      P #",
+	"#      P #",
 	"#        #",
 	"##########",
 };
@@ -43,6 +47,7 @@ void print() {
 		printw("\n");
 	}
 	printw("HP : %d\n", hp);
+	printw("SCORE : %d\n", score);
 	refresh();
 }
 int main()
@@ -73,8 +78,12 @@ int main()
 	    if(!moved) continue;
 	    //움직인 후 이벤트 구현
 	    if(MAP[pu[0]][pu[1]] == TRAP) {
-	    	//트랩 설치하기
+	    	//트랩 이벤트
 		hp -= 10;
+	    }
+	    if(MAP[pu[0]][pu[1]] == PRIZE) {
+		    MAP[pu[0]][pu[1]] = ' ';
+		    score += PRIZE_SCORE;
 	    }
     }
     getch();
