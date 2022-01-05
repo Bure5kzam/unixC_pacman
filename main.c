@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <unistd.h>
 #include <locale.h>
+#include <pthread.h>
 
 #define W 10 // 넓이
 #define H 10 // 높이
@@ -10,15 +11,19 @@ int pu[2] = {1,1};
 int hp = 100;
 int score = 0;
 
-//위치 관련 변수
-int D[4][2] = {{-1,0}, {0, 1}, {1, 0}, {0, -1}};
-int KEY_VALUE[4] = {KEY_UP, KEY_RIGHT, KEY_DOWN, KEY_LEFT};
+//몬스터 파라미터
+// int pe[2] = {}
+
 
 //맵 관련 변수
 char WALL= '#';
 char TRAP= '^';
 char PRIZE='P';
 char PRIZE_SCORE=30;
+
+//기타 변수
+int D[4][2] = {{-1,0}, {0, 1}, {1, 0}, {0, -1}};
+int KEY_VALUE[4] = {KEY_UP, KEY_RIGHT, KEY_DOWN, KEY_LEFT};
 
 char MAP[H][W] = {
 	"##########",
@@ -50,11 +55,7 @@ void print() {
 	printw("SCORE : %d\n", score);
 	refresh();
 }
-int main()
-{
-	setlocale(LC_CTYPE, "ko_KR.utf8");
-	initscr(); 
-	keypad(stdscr, TRUE);
+void user() {
 	while(1) {
 	    print();
 	    int ch = getch();
@@ -86,6 +87,19 @@ int main()
 		    score += PRIZE_SCORE;
 	    }
     }
+
+}
+void enemy() {
+}
+int main()
+{
+	setlocale(LC_CTYPE, "ko_KR.utf8");
+	initscr(); 
+	keypad(stdscr, TRUE);
+	
+	pthread_t tid1, tid2;
+	pthread_create(&tid1, NULL, user, NULL);
+	pthread_join(tid1, NULL);
     getch();
     endwin();
     return 0;
